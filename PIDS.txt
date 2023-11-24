@@ -1,0 +1,37 @@
+  // Declaración e inicialización de las estructuras PID para cada motor
+  PIDpwm_Controller pidMotor_rf, pidMotor_lf, pidMotor_rb, pidMotor_lb;
+
+  // Inicialización de los controladores PID
+
+  //PID_Init(&pidMotor_xx, Kp, Ki, Kd, minOutput in RPM, maxOutput in RPM);
+  PIDpwm_Init(&pidMotor_rf, 3.778f, 10.0f, 0.025f, 0.0f, 200.0f); 
+  PIDpwm_Init(&pidMotor_lf, 3.216f, 10.0f, 0.025f, 0.0f, 200.0f); 
+  PIDpwm_Init(&pidMotor_rb, 3.309f, 10.0f, 0.025f, 0.0f, 200.0f);
+  PIDpwm_Init(&pidMotor_lb, 3.173f, 10.0f, 0.025f, 0.0f, 200.0f);
+
+  //definicion de setpoints
+  pidMotor_rf.setpoint = 100.0;
+  pidMotor_lf.setpoint = 100.0;
+  pidMotor_rb.setpoint = 100.0;
+  pidMotor_lb.setpoint = 100.0;
+  //--------------------------------------------------------------//
+
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+	  //--------------------------------------------------------------//
+	  float pid_output_rf = PIDpwm_Compute(&pidMotor_rf, rpm_rf);
+	  float pid_output_lf = PIDpwm_Compute(&pidMotor_lf, rpm_lf);
+	  float pid_output_rb = PIDpwm_Compute(&pidMotor_rb, rpm_rb);
+	  float pid_output_lb = PIDpwm_Compute(&pidMotor_lb, rpm_lb);
+
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, pid_output_rf);
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, pid_output_lf);
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, pid_output_rb);
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, pid_output_lb);
