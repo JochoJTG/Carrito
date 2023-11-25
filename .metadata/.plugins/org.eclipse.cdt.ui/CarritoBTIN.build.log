@@ -1,0 +1,10 @@
+12:49:09 **** Incremental Build of configuration Debug for project CarritoBTIN ****
+make -j20 all 
+arm-none-eabi-size   CarritoBTIN.elf 
+   text	   data	    bss	    dec	    hex	filename
+  14220	    100	   2228	  16548	   40a4	CarritoBTIN.elf
+Finished building: default.size.stdout
+ 
+
+12:49:09 Build Finished. 0 errors, 0 warnings. (took 422ms)
+

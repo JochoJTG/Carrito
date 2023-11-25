@@ -55,17 +55,27 @@ UART_HandleTypeDef huart1;
 /* USER CODE BEGIN PV */
 
 
-
+/* IMU Adresses */
 uint8_t IMU_ADDRESS = 0b11010000; //0xD0
+uint8_t MAG_ADDRESS = 0x1A;
+
+/* Variables de IMU6050 Acelerometro */
+uint8_t accel_raw_data[6];
 
 float accel_x;
 float accel_y;
 float accel_z;
+
+/* Variables de IMU6050 Giroscopio */
+
+uint8_t gyro_raw_data[6];
+
 float gyro_x;
 float gyro_y;
 float gyro_z;
 
-float GyroMean[50] = {};
+float GyroMean[5] = {};
+float gyro_mean;
 
 float GyroValuesx = 0;
 float GyroValuesy = 0;
@@ -75,8 +85,8 @@ float Gyro_X_calibration = 0;
 float Gyro_Y_calibration = 0;
 float Gyro_Z_calibration = 0;
 
-uint8_t accel_raw_data[6];
 
+/*Angulos*/
 float yawangle = 0;
 float yawangle_new;
 float prev_yaw = 0;
@@ -86,53 +96,29 @@ float filteredYaw;
 uint8_t state = 0;
 
 
-volatile uint8_t pulses_rf;
-volatile uint8_t pulses_lf;
-volatile uint8_t pulses_rb;
-volatile uint8_t pulses_lb;
+volatile uint8_t pulses_rf, pulses_lf, pulses_rb, pulses_lb;
+
 uint8_t pulsesperturn = 20;
-uint16_t rpm_rf;
-uint16_t  rpm_lf;
-uint16_t  rpm_rb;
-uint16_t rpm_lb;
 
-uint8_t current_tick_rf;
-uint8_t current_tick_lf;
-uint8_t current_tick_rb;
-uint8_t current_tick_lb;
+uint16_t rpm_rf, rpm_lf, rpm_rb, rpm_lb;
 
-uint8_t rf_flag;
-uint8_t lf_flag;
-uint8_t rb_flag;
-uint8_t lb_flag;
+uint8_t current_tick_rf, current_tick_lf, current_tick_rb, current_tick_lb;
 
-float pid_output_lf = 0;
+float pid_output_lf, pid_output_rf, pid_output_lb, pid_output_rb;
+
+uint16_t pwm_rf,pwm_lf, pwm_rb, pwm_lb;
 
 PIDpwm_Controller pidMotor_rf,pidMotor_lf,pidMotor_rb,pidMotor_lb;
 
-
+/*Array For Commands*/
 char Commands[3];
 
-
-uint32_t TiempoInterrupt1;
-uint32_t TiempoInterrupt2 = 0;
-uint32_t Intervalo;
-uint32_t TiempoInterrupt3;
-uint32_t TiempoInterrupt4 = 0;
-uint32_t Intervalo2;
-uint32_t TiempoInterrupt5;
-uint32_t TiempoInterrupt6 = 0;
-uint32_t Intervalo3;
-uint32_t TiempoInterrupt7;
-uint32_t TiempoInterrupt8 = 0;
-uint32_t Intervalo4;
-
-uint8_t flag =0;
+/*Transmission array*/
+char rpmdata[100] = {0};
 
 
+/* Magnetometer variables*/
 
-//Variables Magnetometro
-uint8_t array[2]={0x01, 0x1D};
 uint8_t array2[6];
 int16_t MagX,MagY,MagZ;
 float YawMag, angulo2;
@@ -142,9 +128,13 @@ float z_center = 407.95/* Valor de z_center de MATLAB */;
 float radio_promedio = 153.39167/* Valor del radio promedio calculado en MATLAB */;
 float x_norm, y_norm, z_norm;
 float distancia;
+
 // Variables para almacenar los máximos y mínimos de la calibración
 char datos[20];
 
+
+uint8_t count = 0;
+uint32_t time_counter = 1;
 
 /* USER CODE END PV */
 
@@ -165,26 +155,30 @@ static void MX_NVIC_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void MPU_init(void){
+	/*IMU 60050 configuration*/
 	uint8_t check, data;
 
+	/*WHO_AM_I register, returns 0x58 if connected*/
 	HAL_I2C_Mem_Read(&hi2c1, IMU_ADDRESS, 0x75, 1, &check, 1, 100);
 
 	if(check == 104){
+		/*PWR_MGMT_1 register. Write 0 for normal use*/
 		data = 0;
 		HAL_I2C_Mem_Write(&hi2c1, IMU_ADDRESS, 0x6B, 1, &data, 1, 100);
 
+		/*SMPRT_DIV register*/
 		data = 0x07;
 		HAL_I2C_Mem_Write(&hi2c1, IMU_ADDRESS, 0x19, 1, &data, 1, 100);
 
-
+		/*Acceleration Register configuration*/
 		HAL_I2C_Mem_Read(&hi2c1, IMU_ADDRESS, 0x1C, 1, &data, 1, 100);
 
 		uint8_t precission_selector = 0;
 		/*
-		 * 0 for +- 2
-		 * 1 for +- 4
-		 * 2 for +- 8
-		 * 3 for +- 16
+		 * 0 for +- 2g
+		 * 1 for +- 4g
+		 * 2 for +- 8g
+		 * 3 for +- 16g
 		 */
 		data = (data & ~(0b11<<3));
 		data = (data | (precission_selector << 3));
@@ -192,14 +186,15 @@ void MPU_init(void){
 		HAL_I2C_Mem_Write(&hi2c1, IMU_ADDRESS, 0x1C, 1, &data, 1, 100);
 
 
+		/*Gyro Register configuration*/
 		HAL_I2C_Mem_Read(&hi2c1, IMU_ADDRESS, 0x1B, 1, &data, 1, 100);
 
 		uint8_t precission_selector_gyro = 0;
 		/*
-		 * 0 for +- 250
-		 * 1 for +- 4
-		 * 2 for +- 8
-		 * 3 for +- 16
+		 * 0 for +- 250 deg/s
+		 * 1 for +- 500 deg/s
+		 * 2 for +- 1000 deg/s
+		 * 3 for +- 2000 deg/s
 		 */
 		data = (data & ~(0b11<<3));
 		data = (data | (precission_selector_gyro << 3));
@@ -212,17 +207,32 @@ void MPU_init(void){
 
 void MPU_Read_accel(void){
 
+	/*
+	 * 0x3B ACCEL_XOUT_H
+	 * 0x3C ACCEL_XOUT_L
+	 * 0x3D ACCEL_YOUT_H
+	 * 0x3E ACCEL_YOUT_L
+	 * 0x3F ACCEL_ZOUT_H
+	 * 0x40 ACCEL_ZOUT_L
+	 * */
 
-
+	/*Read registers in order*/
 	HAL_I2C_Mem_Read(&hi2c1, IMU_ADDRESS, 0x3B, 1, accel_raw_data, 6, 1000);
 
+	/*Precission value in g's
+	 * change if value in MPU_init changes
+	 * 2
+	 * 4
+	 * 8
+	 * 16
+	 * */
 	 float g_precission = 2;
 
 	 accel_x = (float)(((int16_t)(accel_raw_data[0] << 8 | accel_raw_data[1])) * g_precission/32768);
 	 accel_y = (float)(((int16_t)(accel_raw_data[2] << 8 | accel_raw_data[3])) * g_precission/32768);
-	 accel_z = (float)(((int16_t)(accel_raw_data[4] << 8 | accel_raw_data[5])) * g_precission/32768); //g_precission = 2,4,8,16
+	 accel_z = (float)(((int16_t)(accel_raw_data[4] << 8 | accel_raw_data[5])) * g_precission/32768);
 
-
+	 /*Conversion from g's to m/s^2*/
 	 accel_x = accel_x * 9.81;
 	 accel_y = accel_y * 9.81;
 	 accel_z = accel_z * 9.81;
@@ -230,23 +240,47 @@ void MPU_Read_accel(void){
 
 void MPU_Read_gyro(void){
 
+	/*
+	 * 0x43 ACCEL_XOUT_H
+	 * 0x44 ACCEL_XOUT_L
+	 * 0x45 ACCEL_YOUT_H
+	 * 0x46 ACCEL_YOUT_L
+	 * 0x47 ACCEL_ZOUT_H
+	 * 0x48 ACCEL_ZOUT_L
+	 * */
 
+	if(count < 5){
 
-	uint8_t gyro_raw_data[6];
+		/*Read registers in order*/
+		HAL_I2C_Mem_Read(&hi2c1, IMU_ADDRESS, 0x43, 1, gyro_raw_data, 6, 1000);
 
-	HAL_I2C_Mem_Read(&hi2c1, IMU_ADDRESS, 0x43, 1, gyro_raw_data, 6, 1000);
+		/*Precission value in degs/s
+		 * change if value in MPU_init changes
+		 * 250
+		 * 500
+		 * 1000
+		 * 2000
+		 * */
+		float gyro_Precission = 250;
 
-	float gyro_Precission = 250;
+		 gyro_x = (float)(((int16_t)(gyro_raw_data[0] << 8 | gyro_raw_data[1])) * gyro_Precission/32768);
+		 gyro_y = (float)(((int16_t)(gyro_raw_data[2] << 8 | gyro_raw_data[3])) * gyro_Precission/32768);
+		 gyro_z = (float)(((int16_t)(gyro_raw_data[4] << 8 | gyro_raw_data[5])) * gyro_Precission/32768);
 
-	 gyro_x = (float)(((int16_t)(gyro_raw_data[0] << 8 | gyro_raw_data[1])) * gyro_Precission/32768);
-	 gyro_y = (float)(((int16_t)(gyro_raw_data[2] << 8 | gyro_raw_data[3])) * gyro_Precission/32768);
-	 gyro_z = (float)(((int16_t)(gyro_raw_data[4] << 8 | gyro_raw_data[5])) * gyro_Precission/32768);
+		 /*Gyro values adjusted with calibration values*/
+		 gyro_x += Gyro_X_calibration;
+		 gyro_y += Gyro_Y_calibration;
+		 gyro_z += Gyro_Z_calibration;
 
-	 gyro_x += Gyro_X_calibration;
-	 gyro_y += Gyro_Y_calibration;
-	 gyro_z += Gyro_Z_calibration;
+		 GyroMean[count] = gyro_z;
+		 count++;
+	}
 
-
+	if(count == 5){
+		/*Moving average of 5*/
+		gyro_mean = (GyroMean[0]+GyroMean[1]+GyroMean[2]+GyroMean[3]+GyroMean[4])/5;
+		count = 0;
+	}
 }
 
 
@@ -256,10 +290,10 @@ void Gyro_calibration(void){
 	uint32_t StartTime_cal = HAL_GetTick();
 	uint32_t ElapsedTime_cal = 0;
 
+	/*Calibrate value for 9 seconds*/
 	while(ElapsedTime_cal < 9000){
 
 		MPU_Read_gyro();
-
 		GyroValuesx += gyro_x;
 		GyroValuesy += gyro_y;
 		GyroValuesz += gyro_z;
@@ -270,6 +304,7 @@ void Gyro_calibration(void){
 		ElapsedTime_cal = CurrentTime_cal - StartTime_cal;
 	}
 
+	/*Calibration values, average of gyros values*/
 	Gyro_X_calibration = -1 * GyroValuesx/counter;
 	Gyro_Y_calibration = -1 * GyroValuesy/counter;
 	Gyro_Z_calibration = -1 * GyroValuesz/counter;
@@ -277,32 +312,31 @@ void Gyro_calibration(void){
 }
 
 void MPU_GetYaw(uint8_t elapsed){
+	uint8_t alfa = 0.999;
 
-
-/*
 	yawangle_new = prev_yaw + gyro_z * elapsed/1000;
 
 	yawangle = alfa * prev_yaw + (1-alfa) * yawangle_new;
 
 	prev_yaw = yawangle_new;
-*/
-	uint8_t alfa = 0.99;
-	filteredYaw = alfa*(filteredYaw + gyro_z * elapsed/1000) + (1-alfa)*YawMag;
+
+
+	//filteredYaw = alfa*(filteredYaw + gyro_z * elapsed/1000) + (1-alfa)*YawMag;
 }
 
 void Mag_init(void){
 
-	 HAL_I2C_Mem_Write(&hi2c1, 0x1A, 0x08,1, &array[0], 1, 100);
-	 HAL_I2C_Mem_Write(&hi2c1, 0x1A, 0x09,1, &array[1], 1, 100);
+	 HAL_I2C_Mem_Write(&hi2c1, MAG_ADDRESS, 0x08,1, 0x01, 1, 100);
+	 HAL_I2C_Mem_Write(&hi2c1, MAG_ADDRESS, 0x09,1, 0x1D, 1, 100);
 }
 
 void Mag_read(void){
-	HAL_I2C_Mem_Read(&hi2c1, 0x1A, 0x06,1, array2, 1, 100);
+	HAL_I2C_Mem_Read(&hi2c1, MAG_ADDRESS, 0x06,1, array2, 1, 100);
 	  if(array2[0]&0x01){
-		  HAL_I2C_Mem_Read(&hi2c1, 0x1A, 0x00,1, array2, 6, 100);
-		  MagX = array2[1]<<8 | array2[0];
-		  MagY = array2[3]<<8 | array2[2];
-		  MagY= array2[5]<<8 | array2[4];
+		  HAL_I2C_Mem_Read(&hi2c1, MAG_ADDRESS, 0x00,1, array2, 6, 100);
+		  MagX = array2[1] << 8 | array2[0];
+		  MagY = array2[3] << 8 | array2[2];
+		  MagY = array2[5] << 8 | array2[4];
 	  }
 	  float x_cent = (float)MagX - x_center;
 	  float y_cent = (float)MagY - y_center;
@@ -315,7 +349,7 @@ void Mag_read(void){
 		  z_norm = (z_cent / distancia); //* radio_promedio;
 	  }
 	  distancia = sqrt(x_norm * x_norm + y_norm * y_norm + z_norm * z_norm);
-	  YawMag = atan2(y_norm,x_norm)*180/M_PI;
+	  YawMag = atan2(y_cent,x_cent)*180/M_PI;
 }
 /* USER CODE END 0 */
 
@@ -326,8 +360,6 @@ void Mag_read(void){
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
-char rpmdata[100] = {0};
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -359,8 +391,12 @@ char rpmdata[100] = {0};
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
 
+  /*Check if MPU6050 is connected*/
   HAL_StatusTypeDef ret = HAL_I2C_IsDeviceReady(&hi2c1, IMU_ADDRESS, 10, 100);
-  if(ret == HAL_OK){
+  /*Check if QMC5883 is connected*/
+  HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+
+  if(ret == HAL_OK /*&& ready == HAL_OK*/){
 	  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, 0);
 	  char transmission_buffer[17];
 	  uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
@@ -371,15 +407,13 @@ char rpmdata[100] = {0};
 	  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, 1);
   }
 
-  HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, 0x1A, 10, 1000);
-
   Mag_init();
   MPU_init();
 
   Gyro_calibration();
 
- // HAL_TIM_Base_Start_IT(&htim4);
-  //HAL_TIM_Base_Start_IT(&htim2);
+  HAL_TIM_Base_Start_IT(&htim4);
+  HAL_TIM_Base_Start_IT(&htim2);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
@@ -388,16 +422,14 @@ char rpmdata[100] = {0};
   uint32_t start_time, elapsed_time, current_time;
   uint32_t start_time2,elapsed_time2, current_time2;
   uint32_t Time = HAL_GetTick();
-  uint16_t pwm_rf;
-  uint16_t pwm_lf;
-  uint16_t pwm_rb;
-  uint16_t pwm_lb;
-
-
 
  char Dats[50];
 
+/*Initialize PID functions with its obtained Kp, Ti, Td and reference values*/
  PIDpwm_Init(&pidMotor_lf, 1.83012063f, 7.53971571f, 0.0f, 80.0f, 400.0f);
+ PIDpwm_Init(&pidMotor_rf, 1.83012063f, 7.53971571f, 0.0f, 80.0f, 400.0f);
+ PIDpwm_Init(&pidMotor_lb, 1.83012063f, 7.53971571f, 0.0f, 80.0f, 400.0f);
+ PIDpwm_Init(&pidMotor_rb, 1.83012063f, 7.53971571f, 0.0f, 80.0f, 400.0f);
 
   /* USER CODE END 2 */
 
@@ -411,54 +443,39 @@ char rpmdata[100] = {0};
 
 	  HAL_UART_Receive(&huart1, &Commands, 3, 100);
 
-	  //MPU_Read_gyro();
-	 // MPU_Read_accel();
-
-
-/*
- *
-	  if(elapsed_time > 100){
-
-		 // MPU_GetYaw(elapsed_time);
-		 // start_time = HAL_GetTick();
-		 // elapsed_time = 0;
-	  }
-*/
-	  //uint32_t CurrentTime = HAL_GetTick();
-	  //ElapsedTime = CurrentTime - StartTime;
-
+	  /*State Machine for going forward and turning right.*/
 	  switch(state){
 
 		  case 1:
 			  //Forward path
-			  pwm_lf = 3200;
-			  pwm_lb = 3200;
-			  pwm_rb = 3200;
-			  pwm_rf = 3200;
+			  Forward();
 
+			  pwm_lf = 4095;
+			  pwm_lb = 4095;
+			  pwm_rb = 4095;
+			  pwm_rf = 4095;
 
-			  //Poner en libreria
+			  /*Set PWM value to the PIDs PWM output value*/
 			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, pwm_rf);
 			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, pwm_lf);
 			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, pwm_lb);
 			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, pwm_rb);
-			 Forward();
+
 			  break;
 
 		  case 2:
 			  //Right turn
+			  RightTurn();
 			  pwm_lb = 100;
 			  pwm_rb = 100;
 			  pwm_rf = 100;
 			  pwm_lf = 100;
-			  //Poner en libreria
-			 RightTurn();
+
+			  /*Set PWM value to the PIDs PWM output value*/
 			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, pwm_rf);
 			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, pwm_lf);
 			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, pwm_lb);
 			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, pwm_rb);
-
-
 			  break;
 
 		  default:
@@ -466,80 +483,14 @@ char rpmdata[100] = {0};
 	  }
 
 
-/*
+
 	  current_time = HAL_GetTick();
 	  elapsed_time = current_time - start_time;
 
-	  if(elapsed_time2 > 100){
 
-		  uint32_t millis = HAL_GetTick();
-		  //sprintf(rpmdata, "%.u,%.u,%.u,%.u,%.u,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n", start_time,pwm_lf,pwm_rf,pwm_lb,pwm_rb,rpm_lf,rpm_rf,rpm_lb,rpm_rb,1.00,yawangle);
-		 uint8_t num_chars =  sprintf(rpmdata,"%lu,%.2f,%u,%u,%u,%u,%u,%u,%u,%.2f\n",elapsed_time2 ,pid_output_lf,pwm_rf,pwm_lb,pwm_rb,rpm_lf,rpm_rf,rpm_lb,rpm_rb,yawangle);
-
-		 start_time2 = HAL_GetTick();
-		 elapsed_time2 = 0;
-
-		 //char data2[1];
-		 //uint8_t num_chars2 =  sprintf(rpmdata, "\n");
-		 //uint8_t num_chars =  sprintf(rpmdata, "%.2f , %.2f , %.2f, , %.2f , %.2f", start_time, rpm_rf , rpm_lf, rpm_rb, rpm_lb);
-
-		  HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
-		  //HAL_UART_Transmit(&huart1, &data2, num_chars2, 100);
-	  }
-
-
-
-
-		  if(state == 0){
-			  if(Commands[0] == 'S'){
-				  start_time = HAL_GetTick();
-				  elapsed_time = 0;
-				  start_time2 = HAL_GetTick();
-				  elapsed_time2 = 0;
-				  state++;
-			  }
-		  }
-		  else if(state == 1){
-			  if(elapsed_time > 5000){
-				  start_time = HAL_GetTick();
-				  elapsed_time = 0;
-				  start_time2 = HAL_GetTick();
-				  elapsed_time2 = 0;
-				  state++;
-			  }
-		  }
-		  else if(state == 2){
-			  if(yawangle <= yaw_reference){
-				  yaw_reference += -90 + (-yawangle + yaw_reference);
-				  	//yaw_reference += -90;
-					Stop();
-					Gyro_calibration();
-					start_time = HAL_GetTick();
-					elapsed_time = 0;
-				  	state = 1;
-			  }
-		  }
-
-		  if(Commands[0] == 'E'){
-			  state = 0;
-
-			  pwm_rf = 0;
-			  pwm_lf = 0;
-			  pwm_rb = 0;
-			  pwm_lb = 0;
-			  Stop();
-		  }
-
-
-
-		  current_time2 = HAL_GetTick();
-		  elapsed_time2 = current_time2 - start_time2;
-
-
-
-  }
-  */
+	  /*State machines logic */
 	  if(state == 0){
+		  /*Start Command*/
 		  if(Commands[0] == 'S'){
 			  start_time = HAL_GetTick();
 			  elapsed_time = 0;
@@ -549,6 +500,7 @@ char rpmdata[100] = {0};
 		  }
 	  }
 	  else if(state == 1){
+		  /*Drive Forward for 5 seconds*/ // Change THIS!!
 		  if(elapsed_time > 5000){
 			  start_time = HAL_GetTick();
 			  elapsed_time = 0;
@@ -558,10 +510,12 @@ char rpmdata[100] = {0};
 		  }
 	  }
 	  else if(state == 2){
+		  /*Turn right until yaw reference value*/
 		  if(yawangle <= yaw_reference){
 			  yaw_reference += -90 + (-yawangle + yaw_reference);
 			  	//yaw_reference += -90;
 				Stop();
+				/*Recalibrate at every stop*/
 				Gyro_calibration();
 				start_time = HAL_GetTick();
 				elapsed_time = 0;
@@ -569,37 +523,22 @@ char rpmdata[100] = {0};
 		  }
 	  }
 
+	  /*Stop Command*/
 	  if(Commands[0] == 'E'){
+		  Stop();
+
 		  state = 0;
 
 		  pwm_rf = 0;
 		  pwm_lf = 0;
 		  pwm_rb = 0;
 		  pwm_lb = 0;
-		  Stop();
-	  }
-
-
-	  if(flag == 1){
-		  TiempoInterrupt1 = HAL_GetTick();
-		  Intervalo = TiempoInterrupt1 - TiempoInterrupt2;
-		  TiempoInterrupt2 = TiempoInterrupt1;
-		  flag = 0;
-	  }
-
-	  if(Intervalo > 9){
-		  //rpm_rf = 1000 * 60 / (20*Intervalo);
-		 // rpm_lf = 1000 * 60 / (20*Intervalo);
-		  //rpm_rb = 1000 * 60 / (20*Intervalo);
-		  //rpm_lb = 1000 * 60 / (20*Intervalo);
-
 
 	  }
 
-	  rpm_lf = 1000 * 60 / (20*Intervalo);
-	  uint16_t Datas = sprintf(Dats,"%u,%lu\n",Intervalo, pulses_lf);
+	 // uint16_t Datas = sprintf(Dats,"%u,%u\n",Intervalo, rpm_lb);
 
-	  HAL_UART_Transmit(&huart1, &Dats, Datas, 10);
+	  //HAL_UART_Transmit(&huart1, &Dats, Datas, 10);
 
 
 
@@ -765,7 +704,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 7200 - 1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 150 - 1;
+  htim2.Init.Period = 1000 - 1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -1005,102 +944,75 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 	if(htim -> Instance  == TIM2){
 
-/*
-		if(Intervalo > 12){
-			rpm_lf = (1/20) * 1000 * 60 / Intervalo;
-		}
-		if(Intervalo > 12){
-			rpm_rf = (1/20) * 1000 * 60 / Intervalo;
-		}
-		if(Intervalo > 12){
-			rpm_lb = (1/20) * 1000 * 60 / Intervalo;
-		}
-		if(Inervalo > 12){
-			rpm_rb = (1/20) * 1000 * 60 / Intervalo;
-		}
-
 		pid_output_lf = PIDpwm_Compute(&pidMotor_lf, rpm_lf);
 		pid_output_rf = PIDpwm_Compute(&pidMotor_rf, rpm_rf);
 		pid_output_lb = PIDpwm_Compute(&pidMotor_lb, rpm_lb);
 		pid_output_rb = PIDpwm_Compute(&pidMotor_rb, rpm_rb);
-/*
 
+		rpm_rf =  (current_tick_rf * 1000 * 60) / (pulsesperturn * 100);
+	    rpm_lf =  (current_tick_lf * 1000 * 60) / (pulsesperturn * 100);
+	    rpm_rb =  (current_tick_rb * 1000 * 60) / (pulsesperturn * 100);
+	    rpm_lb =  (current_tick_lb * 1000 * 60) / (pulsesperturn * 100);
 
+		current_tick_rf = 0;
+		current_tick_lf = 0;
+		current_tick_rb = 0;
+		current_tick_lb = 0;
 
+	  uint8_t num_chars =  sprintf(rpmdata,"%lu,%.2f,%u,%u,%u,%u,%u,%u,%u,%.2f\n", 100 * time_counter, pid_output_lf, pwm_rf, pwm_lb, pwm_rb, rpm_lf, rpm_rf, rpm_lb, rpm_rb, yawangle);
 
-		rpm_rf =  (current_tick_rf * 1000 * 60) / (20 * 10);
-	    rpm_lf =  (current_tick_lf * 1000 * 60) / (16 * 10);
-	    rpm_rb =  (current_tick_rb * 1000 * 60) / (20 * 10);
-	    rpm_lb =  (current_tick_lb * 1000 * 60) / (20 * 10);
+	  HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
 
-		  current_tick_rf = 0;
-		  current_tick_lf = 0;
-		  current_tick_rb = 0;
-		  current_tick_lb = 0;
-		  */
+	  time_counter++;
 
 	}
 
 
 	if(htim -> Instance == TIM4){
 
-		MPU_GetYaw(10);
+
+		if(count == 4){
+			/*Integrate  every 50ms*/
+			MPU_GetYaw(50);
+			//count = 0;
+		}
+
+		/*Readd gyro value every 10ms*/
 		MPU_Read_gyro();
 	}
 
 }
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-  /* Prevent unused argument(s) compilation warning */
-  if(GPIO_Pin == GPIO_PIN_14){
-	  //Right front wheel
 
-	  flag = 1;
-	  pulses_lf++;
-	  current_tick_rf++;
-	  TiempoInterrupt1 = HAL_GetTick();
-	  Intervalo = TiempoInterrupt1 - TiempoInterrupt2;
-	  TiempoInterrupt2 = TiempoInterrupt1;
+/*
+ * @pin 15 Right front wheel
+ * @pin 14 Left front wheel
+ * @pin 13 Right back wheel
+ * @pin 12 Left back wheel
+ */
 
-
-  }
   if(GPIO_Pin == GPIO_PIN_15){
-	  //Left front wheel
-
-	  pulses_lf++;
+	  //Right front wheel
+	  pulses_rf++;
 	  current_tick_rf++;
-	  TiempoInterrupt3 = HAL_GetTick();
-	 // Intervalo2 = TiempoInterrupt3 - TiempoInterrupt4;
-	  Intervalo2 = 11;
-	  TiempoInterrupt4 = TiempoInterrupt3;
-
-
+  }
+  if(GPIO_Pin == GPIO_PIN_14){
+	  //Left front wheel
+	  pulses_lf++;
+	  current_tick_lf++;
   }
   if(GPIO_Pin == GPIO_PIN_13){
 	  //Right back wheel
-	  pulses_rb++;
-	  current_tick_rb++;
-	  TiempoInterrupt5 = HAL_GetTick();
-	  //Intervalo3 = TiempoInterrupt5 - TiempoInterrupt6;
-	  Intervalo3 = 12;
-	  TiempoInterrupt6 = TiempoInterrupt5;
-
-
+	  pulses_lb++;
+	  current_tick_lb++;
   }
   if(GPIO_Pin == GPIO_PIN_12){
 	  //Left back wheel
-	  pulses_lb++;
-	  current_tick_lb++;
-	  TiempoInterrupt7 = HAL_GetTick();
-	  //Intervalo4 = TiempoInterrupt7 - TiempoInterrupt8;
-	  Intervalo4 = 13;
-	  TiempoInterrupt8 = TiempoInterrupt7;
-
+	  pulses_rb++;
+	  current_tick_rb++;
 
   }
-  /* NOTE: This function Should not be modified, when the callback is needed,
-           the HAL_GPIO_EXTI_Callback could be implemented in the user file
-   */
 }
 
 /* USER CODE END 4 */

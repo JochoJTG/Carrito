@@ -1,0 +1,104 @@
+17:59:39 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'Mag_init':
+../Core/Src/main.c:329:57: warning: passing argument 5 of 'HAL_I2C_Mem_Write' makes pointer from integer without a cast [-Wint-conversion]
+  329 |          HAL_I2C_Mem_Write(&hi2c1, MAG_ADDRESS, 0x08,1, 0x01, 1, 100);
+      |                                                         ^~~~
+      |                                                         |
+      |                                                         int
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:298,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h:567:134: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'int'
+  567 | HAL_StatusTypeDef HAL_I2C_Mem_Write(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint16_t MemAddress, uint16_t MemAddSize, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                                                                             ~~~~~~~~~^~~~~
+../Core/Src/main.c:330:57: warning: passing argument 5 of 'HAL_I2C_Mem_Write' makes pointer from integer without a cast [-Wint-conversion]
+  330 |          HAL_I2C_Mem_Write(&hi2c1, MAG_ADDRESS, 0x09,1, 0x1D, 1, 100);
+      |                                                         ^~~~
+      |                                                         |
+      |                                                         int
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:298,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h:567:134: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'int'
+  567 | HAL_StatusTypeDef HAL_I2C_Mem_Write(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint16_t MemAddress, uint16_t MemAddSize, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                                                                             ~~~~~~~~~^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:404:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  404 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:444:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  444 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:426:7: warning: unused variable 'Dats' [-Wunused-variable]
+  426 |  char Dats[50];
+      |       ^~~~
+../Core/Src/main.c:424:12: warning: unused variable 'Time' [-Wunused-variable]
+  424 |   uint32_t Time = HAL_GetTick();
+      |            ^~~~
+../Core/Src/main.c:423:39: warning: unused variable 'current_time2' [-Wunused-variable]
+  423 |   uint32_t start_time2,elapsed_time2, current_time2;
+      |                                       ^~~~~~~~~~~~~
+../Core/Src/main.c:423:24: warning: variable 'elapsed_time2' set but not used [-Wunused-but-set-variable]
+  423 |   uint32_t start_time2,elapsed_time2, current_time2;
+      |                        ^~~~~~~~~~~~~
+../Core/Src/main.c:423:12: warning: variable 'start_time2' set but not used [-Wunused-but-set-variable]
+  423 |   uint32_t start_time2,elapsed_time2, current_time2;
+      |            ^~~~~~~~~~~
+../Core/Src/main.c:397:21: warning: unused variable 'ready' [-Wunused-variable]
+  397 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c: In function 'HAL_TIM_PeriodElapsedCallback':
+../Core/Src/main.c:964:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  964 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[100]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[100]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:402:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  402 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:402:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  36564	    492	   2724	  39780	   9b64	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 

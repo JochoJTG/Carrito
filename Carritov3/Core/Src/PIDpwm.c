@@ -7,6 +7,14 @@
 #include "PIDpwm.h"
 
 //definicion de funciones
+
+/* @brief initialize funcion and set Kp, Ti, Td, minimum output and maximum output
+ * @param Kp, Proportional constant PID controller
+ * @param Ti  Integral
+ * @param Td  Derivate
+ * @param min_output  minimum output of pwm
+ * @param max_output maximum outut of pwm
+ */
 void PIDpwm_Init(PIDpwm_Controller *pid, float Kp, float Ti, float Td, float min_output, float max_output){
 	pid->Kp = Kp;
 	pid->Ki = Kp*Ti;
