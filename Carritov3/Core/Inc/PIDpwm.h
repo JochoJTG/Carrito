@@ -5,18 +5,17 @@
  *      Author: eduar
  */
 
-#ifndef INC_PIDWM_H_
-#define INC_PIDWM_H_
+#ifndef INC_PIDPWM_H_
+#define INC_PIDPWM_H_
 
 typedef struct {
-
 	//Coeficientes
 	float Kp;
 	float Ki;
 	float Kd;
 
-	//definido en main
-	float Sp;
+	//cambios de setpoint pid.setpoit =
+	float setpoint;
 
 	//variables
 	float integral; //Integral acumulada
@@ -32,4 +31,4 @@ void PIDpwm_Init(PIDpwm_Controller *pid, float Kp, float Ki, float Kd, float min
 float PIDpwm_Compute(PIDpwm_Controller *pid, float measurement);
 
 
-#endif /* INC_PIDpwm_H_ */
+#endif /* INC_PIDPWM_H_ */
