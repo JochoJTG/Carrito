@@ -21,3 +21,20 @@ void RightTurn(void);
 void LeftTurn(void);
 
 void Stop(void);
+
+void RightFront_back(void);
+
+void LeftFront_back(void);
+
+void RightBack_back(void);
+
+void LeftBack_back(void);
+
+void RightFront_forward(void);
+
+void LeftFront_forward(void);
+
+void RightBack_forward(void);
+
+void LeftBack_forward(void);
+

@@ -1,2 +1,4 @@
-../Core/Src/PIDpwm.c:10:6:PIDpwm_Init	1
-../Core/Src/PIDpwm.c:24:7:PIDpwm_Compute	3
+../Core/Src/PIDpwm.c:11:6:PIDpwm_Init	1
+../Core/Src/PIDpwm.c:29:7:PIDpwm_Compute	14
+../Core/Src/PIDpwm.c:136:6:PIDangle_Init	1
+../Core/Src/PIDpwm.c:150:7:PIDangle_Compute	5

@@ -25,10 +25,15 @@ typedef struct {
 	//limites del PID
 	float min_output;
 	float max_output;
+
+	float Prev_output;
+
+
 }PIDpwm_Controller;
 
-void PIDpwm_Init(PIDpwm_Controller *pid, float Kp, float Ki, float Kd, float min_output, float max_output);
-float PIDpwm_Compute(PIDpwm_Controller *pid, float measurement);
-
+void PIDpwm_Init(PIDpwm_Controller* pid, float Kp, float Ki, float Kd, float min_output, float max_output, float setpoint);
+float PIDpwm_Compute(PIDpwm_Controller* pid, float measurement, int MotorVariable);
+float PIDangle_Compute(PIDpwm_Controller* pid, float measurement);
+void PIDangle_Init(PIDpwm_Controller* pid, float Kp, float Ki, float min_output, float max_output);
 
 #endif /* INC_PIDPWM_H_ */

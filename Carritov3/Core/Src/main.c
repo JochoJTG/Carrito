@@ -92,25 +92,31 @@ float yawangle_new;
 float prev_yaw = 0;
 float yaw_reference = -90;
 float filteredYaw;
-
+float YawOffsetValue;
 uint8_t state = 0;
+float pidanlge_to_use;
 
 
 volatile uint8_t pulses_rf, pulses_lf, pulses_rb, pulses_lb;
 
-uint8_t pulsesperturn = 20;
+float pulsesperturn = 20.0;
 
 float rpm_rf, rpm_lf, rpm_rb, rpm_lb;
 
-uint8_t current_tick_rf, current_tick_lf, current_tick_rb, current_tick_lb;
+float current_tick_rf, current_tick_lf, current_tick_rb, current_tick_lb;
 
 float pid_output_lf, pid_output_rf, pid_output_lb, pid_output_rb;
+float Pid_angle_pwm_left, Pid_angle_pwm_right;
 
 float pwm_rf,pwm_lf, pwm_rb, pwm_lb;
 
 float distance_rf,distance_lf,distance_rb,distance_lb, distance_average;
 
-PIDpwm_Controller pidMotor_rf,pidMotor_lf,pidMotor_rb,pidMotor_lb;
+PIDpwm_Controller pidMotor_rf,pidMotor_lf,pidMotor_rb,pidMotor_lb, pidAngle;
+
+float samplingTime = 250.0;
+
+float setpoint = 3.4;
 
 /*Array For Commands*/
 char Commands[3];
@@ -137,6 +143,8 @@ char datos[20];
 
 uint8_t count = 0;
 uint32_t time_counter = 1;
+uint8_t flag;
+
 
 /* USER CODE END PV */
 
@@ -322,6 +330,12 @@ void MPU_GetYaw(uint8_t elapsed){
 
 	prev_yaw = yawangle_new;
 
+	if(yawangle <= -360){
+		yawangle = 0;
+	}
+	if(yawangle > 360){
+		yawangle = 0;
+	}
 
 	//filteredYaw = alfa*(filteredYaw + gyro_z * elapsed/1000) + (1-alfa)*YawMag;
 }
@@ -425,16 +439,38 @@ int main(void)
 
 
 /*Initialize PID functions with its obtained Kp, Ti, Td and reference values*/
-  PIDpwm_Init(&pidMotor_rf, 3.778f, 10.0f, 0.025f, 0.0f, 300.0f);
-  PIDpwm_Init(&pidMotor_lf, 3.216f, 10.0f, 0.025f, 0.0f, 300.0f);
-  PIDpwm_Init(&pidMotor_rb, 3.309f, 10.0f, 0.025f, 0.0f, 300.0f);
-  PIDpwm_Init(&pidMotor_lb, 1.369f, .2538f, 1.846f, 0.0f, 300.0f);
+  /*
+   PIDpwm_Init(&pidMotor_lf,0.6241f,10.0f,0.025f,-270.0f, 270.0f);
+   PIDpwm_Init(&pidMotor_rf,2.915f,10.00f,0.025f,-270.0f, 270.0f);
+   PIDpwm_Init(&pidMotor_lb,1.369f,0.2538f,1.846f,-270.0f, 270.0f);
+   PIDpwm_Init(&pidMotor_rb,0.0f,0.1283f,0.0f,-270.0f,270.0f);
+  /*
+/*
+  PIDpwm_Init(&pidMotor_rf, 1.7513f, 285.5875f, 0.14992f, -300.0f, 300.0f);
+  PIDpwm_Init(&pidMotor_lf, 1.9756f, 361.081f, 0.15439f, -300.0f, 300.0f);
+  PIDpwm_Init(&pidMotor_rb, 2.4901f, 324.3345, 0.16109f, -300.0f, 300.0f);
+  PIDpwm_Init(&pidMotor_lb, 2.131f, 380.4173f, 0.14994f, -300.0f, 300.0f);
+*/
 
+
+  pidMotor_rf.setpoint = 3.4;
+  pidMotor_lf.setpoint = setpoint;
+  pidMotor_rb.setpoint = setpoint;
+  pidMotor_lb.setpoint = setpoint;
+
+  pidAngle.setpoint = 0;
+
+/*
+  PIDpwm_Init(&pidMotor_rf, 0.90f, 0.0f, 0.0f, -300.0f, 300.0f);
+  PIDpwm_Init(&pidMotor_lf, 1.0f, 0.0f, 0.0f, -300.0f, 300.0f);
+  PIDpwm_Init(&pidMotor_rb, 0.8f, 0.0f, 0.0f, -300.0f, 300.0f);
+  PIDpwm_Init(&pidMotor_lb, 0.9f, 0.0f, 0.0f, -300.0f, 300.0f);
+  */
+  PIDpwm_Init(&pidMotor_rf, 140.0f, 400.0f, 0.0f, -4.0f, 4.0f,3.4);
+  PIDpwm_Init(&pidMotor_lf, 140.0f, 400.0f, 0.0f, -4.0f, 4.0f,3.4);
+  PIDpwm_Init(&pidMotor_rb, 140.0f, 400.0f, 0.0f, -4.0f, 4.0f,3.4);
+  PIDpwm_Init(&pidMotor_lb, 140.0f, 400.0f, 0.0f, -4.0f, 4.0f,3.4);
   /*Set point definition*/
-  pidMotor_rf.setpoint = 300.0;
-  pidMotor_lf.setpoint = 300.0;
-  pidMotor_rb.setpoint = 300.0;
-  pidMotor_lb.setpoint = 300.0;
 
   /* USER CODE END 2 */
 
@@ -453,7 +489,7 @@ int main(void)
 
 		  case 1:
 			  //Forward path
-			  Forward();
+			  //Forward();
 
 			  pwm_lf = 4095;
 			  pwm_lb = 4095;
@@ -468,11 +504,10 @@ int main(void)
 			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, pwm_rb);//pid_output_rb);
 */
 
-			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, pid_output_lf*(4095.0/300));
-			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, pid_output_rf*(4095.0/300));
-			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, pid_output_lb*(4095.0/300));
-			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, pid_output_rb*(4095.0/300));
-
+			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, pid_output_lf);
+			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, pid_output_rf);
+			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, pid_output_lb);
+			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, pid_output_rb);
 /*
 			  if(yawangle > yaw_reference_straightLine){
 				  RightTurn();
@@ -491,17 +526,25 @@ int main(void)
 
 		  case 2:
 			  //Right turn
-			  RightTurn();
-			  pwm_lb = 100;
-			  pwm_rb = 100;
-			  pwm_rf = 100;
-			  pwm_lf = 100;
+
+			  pwm_lb = 3500;
+			  pwm_rb = 3500;
+			  pwm_rf = 3500;
+			  pwm_lf = 3500;
 
 			  /*Set PWM value to the PIDs PWM output value*/
-			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, pwm_rf);
-			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, pwm_lf);
+			  /*
+			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, pwm_lf);
+			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, pwm_rf);
 			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, pwm_lb);
 			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, pwm_rb);
+			  */
+
+
+			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, pid_output_lf);
+			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, pid_output_rf);
+			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, pid_output_lb);
+			  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, pid_output_rb);
 
 			  break;
 
@@ -519,24 +562,46 @@ int main(void)
 
 	  /*State machines logic */
 	  if(state == 0){
+		  flag = 1;
 		  /*Start Command*/
 		  if(Commands[0] == 'S'){
 			  start_time = HAL_GetTick();
 			  elapsed_time = 0;
-			  pidMotor_rf.setpoint = 180.0;
-			  pidMotor_lf.setpoint = 180.0;
-			  pidMotor_rb.setpoint = 180.0;
-			  pidMotor_lb.setpoint = 180.0;
+
+
+			  PIDangle_Init(&pidAngle,30.0f,0.0f,-45.0f,45.0f);
+
+
+
+
+
+			  pidMotor_rf.setpoint = setpoint;
+			  pidMotor_lf.setpoint = setpoint;
+			  pidMotor_rb.setpoint = setpoint;
+			  pidMotor_lb.setpoint = setpoint;
+
+			  flag = 0;
+
 			  state++;
 		  }
 	  }
 	  else if(state == 1){
+		  flag = 0;
 		  /*Drive Forward for 5 seconds*/ // Change THIS!!
-		  if(distance_average > 1000){
-			  pidMotor_rf.setpoint = 0.0;
-			  pidMotor_lf.setpoint = 0.0;
-			  pidMotor_rb.setpoint = 0.0;
-			  pidMotor_lb.setpoint = 0.0;
+		  if(distance_average > 950){
+
+			  pidAngle.setpoint = yaw_reference;
+
+			  setpoint = 3;
+
+			  pidMotor_rf.setpoint = setpoint;
+			  pidMotor_lf.setpoint = setpoint;
+			  pidMotor_rb.setpoint = setpoint;
+			  pidMotor_lb.setpoint = setpoint;
+
+
+
+
 
 			  start_time = HAL_GetTick();
 			  elapsed_time = 0;
@@ -544,13 +609,30 @@ int main(void)
 		  }
 	  }
 	  else if(state == 2){
+
 		  /*Turn right until yaw reference value*/
-		  if(yawangle <= yaw_reference){
+		  if(yawangle >= yaw_reference * 1.05 && yawangle <= yaw_reference * 0.95){
 			  yaw_reference += -90 + (-yawangle + yaw_reference);
-			  	//yaw_reference += -90;
-				Stop();
-				/*Recalibrate at every stop*/
-				Gyro_calibration();
+			  distance_average = 0;
+			  flag = 1;
+
+
+			//yaw_reference += -90;
+			Stop();
+			/*Recalibrate at every stop*/
+			 YawOffsetValue += yawangle;
+			Gyro_calibration();
+
+			 setpoint = 3.4;
+
+			  pidMotor_rf.setpoint = setpoint;
+			  pidMotor_lf.setpoint = setpoint;
+			  pidMotor_rb.setpoint = setpoint;
+			  pidMotor_lb.setpoint = setpoint;
+
+			  pidAngle.setpoint = yawangle;
+
+
 				start_time = HAL_GetTick();
 				elapsed_time = 0;
 			  	state = 1;
@@ -573,16 +655,28 @@ int main(void)
 		  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0);
 		  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0);
 
-		  pidMotor_rf.setpoint = 0.0;
-		  pidMotor_lf.setpoint = 0.0;
-		  pidMotor_rb.setpoint = 0.0;
-		  pidMotor_lb.setpoint = 0.0;
+		  setpoint = 0;
+
+		  pidMotor_rf.setpoint = setpoint;
+		  pidMotor_lf.setpoint = setpoint;
+		  pidMotor_rb.setpoint = setpoint;
+		  pidMotor_lb.setpoint = setpoint;
+
+		  pidAngle.setpoint = 0;
 
 	  }
+
+	  uint8_t num_chars =  sprintf(rpmdata,"%u, %.2f, %.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n",state,pidMotor_rf.setpoint, pid_output_lf, pid_output_rf, pid_output_lb, pid_output_rb, rpm_lf, rpm_rf, rpm_lb, rpm_rb, yawangle);
+	  //uint8_t num_chars =  sprintf(rpmdata,"%.2f,%.2f,%.2f,%.2f\n",rpm_lf, rpm_rf, rpm_lb, rpm_rb);
+
+	  //uint8_t num_chars =  sprintf(rpmdata,"%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n", pwm_lf, pwm_rf, pwm_lb, pwm_rb, rpm_lf, rpm_rf, rpm_lb, rpm_rb, yawangle);
+
+	  HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
 
 	 // uint16_t Datas = sprintf(Dats,"%u,%u\n",Intervalo, rpm_lb);
 
 	  //HAL_UART_Transmit(&huart1, &Dats, Datas, 10);
+
 
 
 
@@ -751,7 +845,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 7200 - 1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 1000 - 1;
+  htim2.Init.Period = 2500 - 1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -972,7 +1066,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : PB12 PB13 PB14 PB15 */
   GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
@@ -1001,39 +1095,41 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 	if(htim -> Instance  == TIM2){
 
-		rpm_rf =  (current_tick_rf * 1000 * 60) / (pulsesperturn * 100);
-	    rpm_lf =  (current_tick_lf * 1000 * 60) / (pulsesperturn * 100);
-	    rpm_rb =  (current_tick_rb * 1000 * 60) / (pulsesperturn * 100);
-	    rpm_lb =  (current_tick_lb * 1000 * 60) / (pulsesperturn * 100);
 
-	    distance_rf += current_tick_rf * 41.469/20;
-		distance_lf += current_tick_lf * 41.469/20;
-		distance_rb += current_tick_rb * 41.469/20;
-		distance_lb += current_tick_lb * 41.469/20;
+		if(flag == 0){
 
-		distance_average += (distance_rf + distance_lf)/2;
+			rpm_rf =  (current_tick_rf * 1000 ) / (pulsesperturn * samplingTime);
+			rpm_lf =  (current_tick_lf * 1000 ) / (pulsesperturn * samplingTime);
+			rpm_rb =  (current_tick_rb * 1000 ) / (pulsesperturn * samplingTime);
+			rpm_lb =  (current_tick_lb * 1000 ) / (pulsesperturn * samplingTime);
 
-	    distance_rf = 0;
-		distance_lf = 0;
-		distance_rb = 0;
-		distance_lb = 0;
+			distance_rf = current_tick_rf * 20.7345/pulsesperturn;
+			distance_lf = current_tick_lf * 20.7345/pulsesperturn;
+			distance_rb = current_tick_rb * 20.7345/pulsesperturn;
+			distance_lb = current_tick_lb * 20.7345/pulsesperturn;
 
-		current_tick_rf = 0;
-		current_tick_lf = 0;
-		current_tick_rb = 0;
-		current_tick_lb = 0;
+			distance_average += (distance_rf + distance_lf + distance_rb + distance_lb)/4;
 
-		pid_output_lf = PIDpwm_Compute(&pidMotor_lf, rpm_lf);
-		pid_output_rf = PIDpwm_Compute(&pidMotor_rf, rpm_rf);
-		pid_output_lb = PIDpwm_Compute(&pidMotor_lb, rpm_lb);
-		pid_output_rb = PIDpwm_Compute(&pidMotor_rb, rpm_rb);
+			distance_rf = 0;
+			distance_lf = 0;
+			distance_rb = 0;
+			distance_lb = 0;
+
+			current_tick_rf = 0;
+			current_tick_lf = 0;
+			current_tick_rb = 0;
+			current_tick_lb = 0;
 
 
-		  uint8_t num_chars =  sprintf(rpmdata,"%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n", pid_output_lf, pid_output_rf, pid_output_lb, pid_output_rb, rpm_lf, rpm_rf, rpm_lb, rpm_rb,distance_average);
+			pid_output_lf = PIDpwm_Compute(&pidMotor_lf, rpm_lf, 1);
+			pid_output_rf = PIDpwm_Compute(&pidMotor_rf, rpm_rf, 2);
+			pid_output_lb = PIDpwm_Compute(&pidMotor_lb, rpm_lb, 3);
+			pid_output_rb = PIDpwm_Compute(&pidMotor_rb, rpm_rb, 4);
 
-		  //uint8_t num_chars =  sprintf(rpmdata,"%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n", pwm_lf, pwm_rf, pwm_lb, pwm_rb, rpm_lf, rpm_rf, rpm_lb, rpm_rb, yawangle);
+			// PID M1 //
 
-		  HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 200);
+		}
+
 
 	}
 
@@ -1042,8 +1138,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 		if(count == 4){
 			/*Integrate  every 50ms*/
-			MPU_GetYaw(100);
+			MPU_GetYaw(50);
+			Pid_angle_pwm_left = -1* PIDangle_Compute(&pidAngle, yawangle);
+			Pid_angle_pwm_right = - Pid_angle_pwm_left;
+			pid_output_lf += Pid_angle_pwm_left;
+			pid_output_lb += Pid_angle_pwm_left;
+			pid_output_rf += Pid_angle_pwm_right;
+			pid_output_rb += Pid_angle_pwm_right;
 			//count = 0;
+
 		}
 
 		/*Readd gyro value every 10ms*/
