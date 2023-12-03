@@ -1,34 +1,10 @@
-17:59:39 **** Incremental Build of configuration Debug for project Carritov3 ****
+12:57:55 **** Incremental Build of configuration Debug for project Carritov3 ****
 make -j20 all 
+arm-none-eabi-gcc "../Core/Src/PIDpwm.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/PIDpwm.d" -MT"Core/Src/PIDpwm.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/PIDpwm.o"
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c: In function 'Mag_init':
-../Core/Src/main.c:329:57: warning: passing argument 5 of 'HAL_I2C_Mem_Write' makes pointer from integer without a cast [-Wint-conversion]
-  329 |          HAL_I2C_Mem_Write(&hi2c1, MAG_ADDRESS, 0x08,1, 0x01, 1, 100);
-      |                                                         ^~~~
-      |                                                         |
-      |                                                         int
-In file included from ../Core/Inc/stm32f1xx_hal_conf.h:298,
-                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
-                 from ../Core/Inc/main.h:30,
-                 from ../Core/Src/main.c:20:
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h:567:134: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'int'
-  567 | HAL_StatusTypeDef HAL_I2C_Mem_Write(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint16_t MemAddress, uint16_t MemAddSize, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                                                                                                             ~~~~~~~~~^~~~~
-../Core/Src/main.c:330:57: warning: passing argument 5 of 'HAL_I2C_Mem_Write' makes pointer from integer without a cast [-Wint-conversion]
-  330 |          HAL_I2C_Mem_Write(&hi2c1, MAG_ADDRESS, 0x09,1, 0x1D, 1, 100);
-      |                                                         ^~~~
-      |                                                         |
-      |                                                         int
-In file included from ../Core/Inc/stm32f1xx_hal_conf.h:298,
-                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
-                 from ../Core/Inc/main.h:30,
-                 from ../Core/Src/main.c:20:
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h:567:134: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'int'
-  567 | HAL_StatusTypeDef HAL_I2C_Mem_Write(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint16_t MemAddress, uint16_t MemAddSize, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                                                                                                             ~~~~~~~~~^~~~~
 ../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:404:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-  404 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
       |                                     ^~~~~~~~~~~~~~~~~~~~
       |                                     |
       |                                     char (*)[17]
@@ -39,8 +15,14 @@ In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
   749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
       |                                                                ~~~~~~~~~~~~~~~^~~~~
-../Core/Src/main.c:444:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
-  444 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:481:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  481 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
       |                                     ^~~~~~~~~
       |                                     |
       |                                     char (*)[3]
@@ -51,54 +33,1579 @@ In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
   750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
       |                                                               ~~~~~~~~~^~~~~
-../Core/Src/main.c:426:7: warning: unused variable 'Dats' [-Wunused-variable]
-  426 |  char Dats[50];
-      |       ^~~~
-../Core/Src/main.c:424:12: warning: unused variable 'Time' [-Wunused-variable]
-  424 |   uint32_t Time = HAL_GetTick();
-      |            ^~~~
-../Core/Src/main.c:423:39: warning: unused variable 'current_time2' [-Wunused-variable]
-  423 |   uint32_t start_time2,elapsed_time2, current_time2;
-      |                                       ^~~~~~~~~~~~~
-../Core/Src/main.c:423:24: warning: variable 'elapsed_time2' set but not used [-Wunused-but-set-variable]
-  423 |   uint32_t start_time2,elapsed_time2, current_time2;
-      |                        ^~~~~~~~~~~~~
-../Core/Src/main.c:423:12: warning: variable 'start_time2' set but not used [-Wunused-but-set-variable]
-  423 |   uint32_t start_time2,elapsed_time2, current_time2;
-      |            ^~~~~~~~~~~
-../Core/Src/main.c:397:21: warning: unused variable 'ready' [-Wunused-variable]
-  397 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
-      |                     ^~~~~
-../Core/Src/main.c: In function 'HAL_TIM_PeriodElapsedCallback':
-../Core/Src/main.c:964:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-  964 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+../Core/Src/main.c:682:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  682 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
       |                                      ^~~~~~~~
       |                                      |
-      |                                      char (*)[100]
+      |                                      char (*)[200]
 In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
                  from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
                  from ../Core/Inc/main.h:30,
                  from ../Core/Src/main.c:20:
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[100]'
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
   749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
       |                                                                ~~~~~~~~~~~~~~~^~~~~
-../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:402:39: warning: 'Device connected 
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
    ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
-  402 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
       |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../Core/Src/main.c:402:39: note: 'sprintf' output 19 bytes into a destination of size 17
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
 arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: Carritov3.elf
  
 arm-none-eabi-size   Carritov3.elf 
 arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
    text	   data	    bss	    dec	    hex	filename
-  36564	    492	   2724	  39780	   9b64	Carritov3.elf
+  39132	    500	   2940	  42572	   a64c	Carritov3.elf
 arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
 Finished building: default.size.stdout
  
 Finished building: Carritov3.list
 Finished building: Carritov3.hex
+ 
+ 
+13:09:43 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/PIDpwm.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/PIDpwm.d" -MT"Core/Src/PIDpwm.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/PIDpwm.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:481:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  481 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:682:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  682 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39132	    500	   2940	  42572	   a64c	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:10:24 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/PIDpwm.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/PIDpwm.d" -MT"Core/Src/PIDpwm.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/PIDpwm.o"
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39132	    500	   2940	  42572	   a64c	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:11:29 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39084	    500	   2940	  42524	   a61c	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:12:58 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-size   Carritov3.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39084	    500	   2940	  42524	   a61c	Carritov3.elf
+Finished building: default.size.stdout
+ 
+13:13:47 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39084	    500	   2940	  42524	   a61c	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:15:20 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/PIDpwm.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/PIDpwm.d" -MT"Core/Src/PIDpwm.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/PIDpwm.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:469:3: error: too few arguments to function 'PIDpwm_Init'
+  469 |   PIDpwm_Init(&pidMotor_rf, 100.0f, 400.0f, 0.0f, -4095.0f, 4095.0f);
+      |   ^~~~~~~~~~~
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/PIDpwm.h:34:6: note: declared here
+   34 | void PIDpwm_Init(PIDpwm_Controller* pid, float Kp, float Ki, float Kd, float min_output, float max_output, float setpoint);
+      |      ^~~~~~~~~~~
+../Core/Src/main.c:470:3: error: too few arguments to function 'PIDpwm_Init'
+  470 |   PIDpwm_Init(&pidMotor_lf, 130.0f, 400.0f, 0.0f, -4095.0f, 4095.0f);
+      |   ^~~~~~~~~~~
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/PIDpwm.h:34:6: note: declared here
+   34 | void PIDpwm_Init(PIDpwm_Controller* pid, float Kp, float Ki, float Kd, float min_output, float max_output, float setpoint);
+      |      ^~~~~~~~~~~
+../Core/Src/main.c:471:3: error: too few arguments to function 'PIDpwm_Init'
+  471 |   PIDpwm_Init(&pidMotor_rb, 100.0f, 410.0f, 0.0f, -4095.0f, 4095.0f);
+      |   ^~~~~~~~~~~
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/PIDpwm.h:34:6: note: declared here
+   34 | void PIDpwm_Init(PIDpwm_Controller* pid, float Kp, float Ki, float Kd, float min_output, float max_output, float setpoint);
+      |      ^~~~~~~~~~~
+../Core/Src/main.c:472:3: error: too few arguments to function 'PIDpwm_Init'
+  472 |   PIDpwm_Init(&pidMotor_lb, 100.8f, 400.0f, 0.0f, -4095.0f, 4095.0f);
+      |   ^~~~~~~~~~~
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/PIDpwm.h:34:6: note: declared here
+   34 | void PIDpwm_Init(PIDpwm_Controller* pid, float Kp, float Ki, float Kd, float min_output, float max_output, float setpoint);
+      |      ^~~~~~~~~~~
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+make: *** [Core/Src/subdir.mk:40: Core/Src/main.o] Error 1
+"make -j20 all" terminated with exit code 2. Build might be incomplete.
+13:15:46 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39100	    500	   2940	  42540	   a62c	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:18:44 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/PIDpwm.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/PIDpwm.d" -MT"Core/Src/PIDpwm.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/PIDpwm.o"
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39164	    500	   2940	  42604	   a66c	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:26:36 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39164	    500	   2940	  42604	   a66c	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:34:01 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39156	    500	   2940	  42596	   a664	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:34:14 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-size   Carritov3.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39156	    500	   2940	  42596	   a664	Carritov3.elf
+Finished building: default.size.stdout
+ 
+13:35:37 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39156	    500	   2940	  42596	   a664	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:36:36 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39156	    500	   2940	  42596	   a664	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:37:42 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39156	    500	   2940	  42596	   a664	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:39:07 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39156	    500	   2940	  42596	   a664	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:46:13 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/PIDpwm.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/PIDpwm.d" -MT"Core/Src/PIDpwm.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/PIDpwm.o"
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39180	    500	   2940	  42620	   a67c	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:47:26 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39180	    500	   2940	  42620	   a67c	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:49:26 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/PIDpwm.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/PIDpwm.d" -MT"Core/Src/PIDpwm.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/PIDpwm.o"
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39108	    500	   2940	  42548	   a634	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:55:52 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/PIDpwm.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/PIDpwm.d" -MT"Core/Src/PIDpwm.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/PIDpwm.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39140	    500	   2940	  42580	   a654	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+13:58:38 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/PIDpwm.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/PIDpwm.d" -MT"Core/Src/PIDpwm.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/PIDpwm.o"
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39108	    500	   2940	  42548	   a634	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+14:00:28 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39108	    500	   2940	  42548	   a634	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+14:03:55 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39108	    500	   2940	  42548	   a634	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.list
+Finished building: Carritov3.hex
+ 
+ 
+14:20:10 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39108	    500	   2940	  42548	   a634	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.hex
+Finished building: Carritov3.list
+ 
+ 
+14:22:55 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39108	    500	   2940	  42548	   a634	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.hex
+Finished building: Carritov3.list
+ 
+ 
+14:26:38 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39108	    500	   2940	  42548	   a634	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.hex
+Finished building: Carritov3.list
+ 
+ 
+14:30:20 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39108	    500	   2940	  42548	   a634	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.hex
+Finished building: Carritov3.list
+ 
+ 
+14:37:15 **** Incremental Build of configuration Debug for project Carritov3 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:420:37: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  420 |           HAL_UART_Transmit(&huart1,&transmission_buffer,transmission_size, 500);
+      |                                     ^~~~~~~~~~~~~~~~~~~~
+      |                                     |
+      |                                     char (*)[17]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[17]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:447:3: warning: "/*" within comment [-Wcomment]
+  447 |   /*
+      |    
+../Core/Src/main.c:448:1: warning: "/*" within comment [-Wcomment]
+  448 | /*
+      |  
+../Core/Src/main.c:485:37: warning: passing argument 2 of 'HAL_UART_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
+  485 |           HAL_UART_Receive(&huart1, &Commands, 3, 100);
+      |                                     ^~~~~~~~~
+      |                                     |
+      |                                     char (*)[3]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:750:72: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+  750 | HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                               ~~~~~~~~~^~~~~
+../Core/Src/main.c:674:38: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  674 |           HAL_UART_Transmit(&huart1, &rpmdata, num_chars, 100);
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[200]
+In file included from ../Core/Inc/stm32f1xx_hal_conf.h:338,
+                 from ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:749:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[200]'
+  749 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:438:24: warning: variable 'elapsed_time' set but not used [-Wunused-but-set-variable]
+  438 |   uint32_t start_time, elapsed_time, current_time;
+      |                        ^~~~~~~~~~~~
+../Core/Src/main.c:413:21: warning: unused variable 'ready' [-Wunused-variable]
+  413 |   HAL_StatusTypeDef ready = HAL_I2C_IsDeviceReady(&hi2c1, MAG_ADDRESS, 10, 1000);
+      |                     ^~~~~
+../Core/Src/main.c:418:39: warning: 'Device connected 
+   ' directive writing 18 bytes into a region of size 17 [-Wformat-overflow=]
+  418 |           uint8_t transmission_size = sprintf(transmission_buffer,"Device connected \n");
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:418:39: note: 'sprintf' output 19 bytes into a destination of size 17
+arm-none-eabi-gcc -o "Carritov3.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Jorge\Documents\Uni\5 Semestre\STM\Sensores\Carrito\Carritov3\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Carritov3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Carritov3.elf
+ 
+arm-none-eabi-size   Carritov3.elf 
+arm-none-eabi-objdump -h -S  Carritov3.elf  > "Carritov3.list"
+   text	   data	    bss	    dec	    hex	filename
+  39108	    500	   2940	  42548	   a634	Carritov3.elf
+arm-none-eabi-objcopy  -O ihex  Carritov3.elf  "Carritov3.hex"
+Finished building: default.size.stdout
+ 
+Finished building: Carritov3.hex
+Finished building: Carritov3.list
  
  

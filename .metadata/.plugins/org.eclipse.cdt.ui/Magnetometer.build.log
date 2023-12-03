@@ -1,0 +1,10 @@
+21:35:48 **** Build of configuration Debug for project Magnetometer ****
+make -j20 all 
+arm-none-eabi-size   Magnetometer.elf 
+   text	   data	    bss	    dec	    hex	filename
+  44224	    512	   2560	  47296	   b8c0	Magnetometer.elf
+Finished building: default.size.stdout
+ 
+
+21:35:48 Build Finished. 0 errors, 0 warnings. (took 348ms)
+

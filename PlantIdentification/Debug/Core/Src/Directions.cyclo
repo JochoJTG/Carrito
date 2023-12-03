@@ -2,3 +2,8 @@
 ../Core/Src/Directions.c:21:6:RightTurn	1
 ../Core/Src/Directions.c:32:6:Stop	1
 ../Core/Src/Directions.c:43:6:Back	1
+../Core/Src/Directions.c:54:6:LeftTurn	1
+../Core/Src/Directions.c:65:6:RightFront_back	1
+../Core/Src/Directions.c:71:6:LeftFront_back	1
+../Core/Src/Directions.c:77:6:RightBack_back	1
+../Core/Src/Directions.c:82:6:LeftBack_back	1

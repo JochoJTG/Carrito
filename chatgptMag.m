@@ -3,7 +3,7 @@ close all
 clc
 
 % Leer los datos de Excel
-datos = xlsread('DatosMag.xlsx');
+datos = xlsread('DatosMag2.xlsx');
 datos(any(isnan(datos), 2), :) = [];
 
 % Extraer los datos de cada eje

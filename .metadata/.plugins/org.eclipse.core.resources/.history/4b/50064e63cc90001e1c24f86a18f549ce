@@ -1,0 +1,159 @@
+/*
+ * PID.c
+ *
+ *  Created on: Nov 12, 2023
+ *      Author: eduar
+ */
+#include "PIDpwm.h"
+#include "Directions.h"
+
+//definicion de funciones
+void PIDpwm_Init(PIDpwm_Controller *pid, float Kp, float Ti, float Td, float min_output, float max_output){
+	pid->Kp = Kp;
+	pid->Ki = Kp/Ti;
+	pid->Kd = Kp * Td;
+	//inicializar variables tipo float
+    pid->setpoint = 0.0f;
+    pid->integral = 0.0f;
+	pid->errorAnterior = 0.0f;
+    pid->medicionSensor_Anterior = 0.0f;
+    //limites del PID
+    pid->min_output = min_output;
+    pid->max_output = max_output;
+
+    pid->Prev_output = 0.0;
+
+
+}
+
+float PIDpwm_Compute(PIDpwm_Controller *pid, float medicionSensor, int MotorVariable) {
+	float voltageOutput;
+
+
+    float error = pid->setpoint - medicionSensor;
+    pid->integral += error * 0.250;
+    float derivativo = (error - pid->errorAnterior)/0.250;
+    float output = pid->Kp * error + pid->Ki * pid->integral + pid->Kd * derivativo;
+
+    //saturación de la salida
+    if (output > pid->max_output) {
+    	output = pid->max_output;
+    	//voltageOutput = output * (4095)/pid->max_output;
+    }
+    if (output < pid->min_output){
+    	output = pid->min_output;
+    }
+
+    voltageOutput = output * 4095/pid->max_output;
+
+    if(output < 0){
+    	output *= -1;
+
+    	if(MotorVariable == 1){
+    		//Left Front
+    		LeftFront_back();
+    	}
+    	else if(MotorVariable == 2){
+    		//Right Front
+    		RightFront_back();
+    	}
+    	else if(MotorVariable == 3){
+    		// Left Back
+    		LeftBack_back();
+    	}
+    	else if(MotorVariable == 4){
+    		// Right Back
+    		RightBack_back();
+    	}
+    }
+
+    if(output > 0){
+    	if(MotorVariable == 1){
+    		//Left Front
+    		LeftFront_forward();
+    	}
+    	else if(MotorVariable == 2){
+    		//Right Front
+    		RightFront_forward();
+    	}
+    	else if(MotorVariable == 3){
+    		// Left Back
+    		LeftBack_forward();
+    	}
+    	else if(MotorVariable == 4){
+    		// Right Back
+    		RightBack_forward();
+    	}
+    }
+
+/*
+    if(output < 0 && output > pid->min_output){
+    	 voltageOutput = output * (-4095)/pid->Prev_output;
+
+     	if(MotorVariable == 1){
+     		//Left Front
+     		LeftFront_back();
+     	}
+     	else if(MotorVariable == 2){
+     		//Right Front
+     		RightFront_back();
+     	}
+     	else if(MotorVariable == 3){
+     		// Left Back
+     		LeftBack_back();
+     	}
+     	else if(MotorVariable == 4){
+     		// Right Back
+     		RightBack_back();
+
+     	}
+    }
+    else if(output > 0 && output < pid->max_output){
+    	   voltageOutput =  output*(4095.0/pid->max_output) + pid->Prev_output; //255 es el max PWM, maxOutput es valor en PWM
+    }
+    */
+
+    //actualizar para la próxima iteración
+    pid->errorAnterior = error;
+    pid->medicionSensor_Anterior = medicionSensor;
+    //pid->Prev_output = voltageOutput;
+    return voltageOutput;
+
+
+}
+/*
+void PIDangle_Init(PIDpwm_Controller *pid, float Kp, float Ti, float min_output, float max_output){
+	pid->Kp = Kp;
+	pid->Ki = Kp/Ti;
+
+	//inicializar variables tipo float
+    pid->setpoint = 0.0f;
+    pid->integral = 0.0f;
+	pid->errorAnterior = 0.0f;
+
+    //limites del PID
+    pid->min_output = min_output;
+    pid->max_output = max_output;
+}
+
+float PIDangle_Compute(PIDpwm_Controller *pid, float medicionAngulo){
+	if( -0.25 < medicionAngulo && medicionAngulo < 0.25 ){
+		medicionAngulo = pid->setpoint;
+	}
+	float error = pid->setpoint - medicionAngulo;
+	pid->integral += error*0.05;
+	float output = pid->Kp * error + pid->Ki * pid->integral;
+
+	//actualizar para la próxima iteración
+	pid->medicionSensor_Anterior = medicionAngulo;
+
+	//saturación de la salida
+	if (output > pid->max_output) output = pid->max_output;
+	if (output < pid->min_output) output = pid->min_output;
+
+	//Conversion
+	 float voltageOutput = output*(4095.0/pid->max_output); //4095 es el max PWM, maxOutput es valor en PWM
+	 pid->Prev_output = voltageOutput;
+	 return voltageOutput + pid->Prev_output;
+}
+*/
